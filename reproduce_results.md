@@ -48,8 +48,8 @@ Note: for the case "yuga-G2-a", the history size (37.2k transactions) is too lar
 
 ### 3 & 4. <a name='oneshot10k' /> Cobra's verifier performance analysis
 
-This experiment runs four variants of Cobra's verifier (MonoSAT, Cobra w/o prunning, Cobra w/o pruning and coalescing, and Cobra) on workoads of 10,000 trasnactions with our five benchmarks (TPC-C, C-Twitter, C-RUBiS, BlindW-RW, and BlindW-RM). 
-By analyzing the results, we have results for (1) decomposition of cobra's verification runtim and (2) differential analysis.
+This experiment runs four variants of Cobra's verifier (MonoSAT, Cobra w/o prunning, Cobra w/o pruning and coalescing, and Cobra) on workloads of 10,000 transactions with our five benchmarks (TPC-C, C-Twitter, C-RUBiS, BlindW-RW, and BlindW-RM). 
+By analyzing the results, we have results for (1) decomposition of cobra's verification runtime and (2) differential analysis.
 
     $ cd $COBRA_HOME/CobraVerifier/
     $ python bench_mono.py ../CobraLogs/one-shot-10k/
@@ -76,7 +76,7 @@ To reproduce the results of scaling, run the following cmds:
     $ python bench_scaling.py ../CobraLogs/scaling/
 
 This experiment will take about 0.5-1hr to finish.
-It runs verification in rounds with seven different batch sizes (nubmer of trasnactions for each round) on two workloads, which is 14 runs in total. Each run takes about several minutes to finish.
+It runs verification in rounds with seven different batch sizes (number of transactions for each round) on two workloads, which is 14 runs in total. Each run takes about several minutes to finish.
 
 Building baselines <a name='build_bsl'/>
 ---
@@ -114,9 +114,9 @@ If the baseline is successfully compiled, you can test the binary by:
     $ ./target/debug/dbcop
     # should return "USAGE: dbcop <SUBCOMMAND>"
 
-#### (3) compile BE19-transalator
+#### (3) compile BE19-translator
 
-BE19-transalator is a piece of software that converts Cobra's history to BE19's. To compile the translator, run:
+BE19-translator is a piece of software that converts Cobra's history to BE19's. To compile the translator, run:
 
     $ cd $COBRA_HOME/CobraVerifier/bsl/BE19/BE19_translator/
     $ cargo build
@@ -143,7 +143,7 @@ Finally, we deploy these baselines and convert histories into the formats that t
 	$ cd $COBRA_HOME/CobraVerifier/bsl/
     $ ./deploy_gen.sh ../../CobraLogs/bsl/
 
-Note that the deployment may take a while (tens of minutes) because coverting histories to some format (DIMACS, a CNF format) is slow; also, the DIMACS file may consume substantial disk space (several to tens of GB) for workloads larger than 500 transactions. 
+Note that the deployment may take a while (tens of minutes) because converting histories to some format (DIMACS, a CNF format) is slow; also, the DIMACS file may consume substantial disk space (several to tens of GB) for workloads larger than 500 transactions. 
 
 
 Troubleshooting
