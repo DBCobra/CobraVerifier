@@ -1,34 +1,35 @@
 # Instructions to reproduce results
 
-There are five topics about experimenting Cobra's verifier in Section 6.1 and 6.2 in [the paper](XXX):
+There are five topics about experimenting Cobra's verifier in Section 6.1 and 6.2 in Cobra paper (to appear):
 
-* [Verification runtime vs. number of transactions](#bsl)
-* [Detecting serializability violations](#ser_violation)
-* [Decomposition of cobra's verification runtime](#oneshot10k)
-* [Differential analysis of Cobra's verification runtime](#oneshot10k)
-* [Scaling of Cobra's verification](#scaling)
+1. [Verification runtime vs. number of transactions](#bsl)
+2. [Detecting serializability violations](#ser_violation)
+3. [Decomposition of cobra's verification runtime](#oneshot10k)
+4. [Differential analysis of Cobra's verification runtime](#oneshot10k)
+5. [Scaling of Cobra's verification](#scaling)
 
-In the following, we will introduce how to reproduce the results about these topics.
+In the following, we will introduce how to reproduce the results.
 
-### <a name='bsl' /> Compared with baselines
+### 1. <a name='bsl' /> Comparing with baselines on various workload sizes
 
-This experiment runs four baselines ([BE19](XXX), [MiniSAT](XXX), [MonoSAT](XXX), and [Z3](XXX)) and Cobra's verifier on workloads with various sizes.
+This experiment runs four baselines ([BE19](https://gitlab.math.univ-paris-diderot.fr/ranadeep/dbcop), [MiniSAT](http://minisat.se/), [Z3](https://github.com/Z3Prover/z3), and [MonoSAT](http://www.cs.ubc.ca/labs/isd/Projects/monosat/)) and Cobra's verifier on workloads with various sizes.
 
-See [building baselines](#build_bsl) to build the tested baselines.
+See [build and deploy baselines](#build_bsl) to setup the tested baselines.
 
-Use the following cmds to run **all** baselines, which may take **many hours** to finish depending on the workload sizes.
+After deploying baselines,
+use the following cmds to run **all** baselines, which may take **many hours** to finish depending on the workload sizes.
 
     $ cd $COBRA_HOME/CobraVerifier/bsl/
     $ python ./run_bsl.py all ./bin/ ./data/
     
-One can test one baseline using:
+One can test one baseline at a time using:
 
 
     $ python ./run_bsl.py [be19|sat-mini|smt-z3|mono|cobra] ./bin/ ./data/
     // choose one from [be19|sat-mini|smt-z3|mono|cobra]
 
 
-### <a name='ser_violation' /> Detecting serializability violations
+### 2. <a name='ser_violation' /> Detecting serializability violations
 
 This experiment uses Cobra's verifier to check serializability violations in productions systems.
 
@@ -45,7 +46,7 @@ Note: for the case "yuga-G2-a", the history size (37.2k transactions) is too lar
 * check the case  "yuga-G2-a": `./run.sh mono aduit ./cobra.conf.default ../CobraLogs/ser-violation/yuga-G2-a/`
 
 
-### <a name='oneshot10k' /> Cobra's verifier performance analysis
+### 3 & 4. <a name='oneshot10k' /> Cobra's verifier performance analysis
 
 This experiment runs four variants of Cobra's verifier (MonoSAT, Cobra w/o prunning, Cobra w/o pruning and coalescing, and Cobra) on workoads of 10,000 trasnactions with our five benchmarks (TPC-C, C-Twitter, C-RUBiS, BlindW-RW, and BlindW-RM). 
 By analyzing the results, we have results for (1) decomposition of cobra's verification runtim and (2) differential analysis.
@@ -54,7 +55,8 @@ By analyzing the results, we have results for (1) decomposition of cobra's verif
     $ python bench_mono.py ../CobraLogs/one-shot-10k/
     
 This experiment will take about 20min to finish (with the default settings).
-Specifically, this experiment runs four verifier variants on five workloads, which is 20 runs in total. The default timeout is 60s (XXX).
+This experiment runs four verifier variants on five workloads, which contains 20 runs in total. The default timeout is 60s,
+which can be updated by changing `g_timeout = 60` in the file `bench_mono.py`.
 
 One will see results (for example):
 
@@ -66,7 +68,7 @@ In the above results, `FFF`, `TFF`, `TTF`, and `TTT` represents the variants of 
 `timeoutexpired` indicates the verification is cut because of timeout; 
 The numbered cell (for example, `1.70/0.00/1.04/2.76`) represents runtime (in seconds; separated by `/`) of constructing, pruning, solving, and the whole verification.
 
-### <a name='scaling' /> Scaling
+### 5. <a name='scaling' /> Scaling
 
 To reproduce the results of scaling, run the following cmds:
 
@@ -81,12 +83,12 @@ Building baselines <a name='build_bsl'/>
 
 There are four baselines:
 
-* (a) BE19: the algorithm of [Biswas and Enea](XXX) to check serializability, which is in Rust
-* (b) MiniSAT: encoding serializability verification into SAT formulas and feeding this encoding to MiniSAT
-* (c) Z3: a linear arithmetic SMT encoding and feeding this encoding to [Z3](XXX) 
-* (d) [MonoSAT](XXX)
+* (a) BE19: the algorithm of [Biswas and Enea](https://arxiv.org/abs/1908.04509) to check serializability, which is in Rust
+* (b) MiniSAT: encoding serializability verification into SAT formulas and feeding this encoding to [MiniSAT](http://minisat.se/)
+* (c) Z3: a linear arithmetic SMT encoding and feeding this encoding to [Z3](https://github.com/Z3Prover/z3) 
+* (d) [MonoSAT](http://www.cs.ubc.ca/labs/isd/Projects/monosat/)
 
-In the following, we first build and install the baselines (a)-(c), and then deploy them for further usage.
+In the following, we first build and install the baseline (a)-(c), and then deploy them for further usage.
 
 ### Step 1: build BE19
 
@@ -134,14 +136,14 @@ If the translator is successfully compiled, you can test the binary by:
     $ sudo apt-get install z3
     $ pip install z3-solver
 
-#### Step 4: deploy baselines
+### Step 4: deploy baselines
 
-Next we need to deploy these baselines and convert histories into the formats that these baselines can consume:
+Finally, we deploy these baselines and convert histories into the formats that these baselines can consume:
 
 	$ cd $COBRA_HOME/CobraVerifier/bsl/
     $ ./deploy_gen.sh ../../CobraLogs/bsl/
 
-Note that this deployment procedure can take a while (tens of mins) because coverting histories to some format (DIMACS, a CNF format) is slow; it also may consume substantial disk space (tens of GB). 
+Note that the deployment may take a while (tens of minutes) because coverting histories to some format (DIMACS, a CNF format) is slow; also, the DIMACS file may consume substantial disk space (several to tens of GB) for workloads larger than 500 transactions. 
 
 
 Troubleshooting
