@@ -7,13 +7,13 @@ from subprocess import TimeoutExpired
 import pickle
 from gen_config import CobraConfig
 
+g_timeout = 60
+
 def usage_exit():
     print("usage: ./bench_mono.py <trace_folder>")
     exit(1)
 
 def run_cmd(cmd, time_out=None):
-    global g_timeout
-
     print(cmd)
     try:
         result = subprocess.run(cmd, timeout=time_out, stdout=subprocess.PIPE)
@@ -106,6 +106,7 @@ def dump_output_space(result):
 
 
 def main(t_folder):
+    global g_timeout
     config_file = "cobra.conf"
 
     # ww_cons, bundle_cons, infer_relation, pcsg_on
@@ -141,7 +142,7 @@ def main(t_folder):
                     '-jar', './target/CobraVerifier-0.0.1-SNAPSHOT-jar-with-dependencies.jar',
                     'mono', 'audit',
                     config_file, ("%s/%s" % (t_folder, bench))]
-            out = run_cmd(cmd, time_out=60)
+            out = run_cmd(cmd, time_out=g_timeout)
 
             phase_time = get_phase(out)
             result[bench_name][exp] = phase_time
