@@ -7,10 +7,10 @@ How to install and run Cobra verifier
 
 The following steps build Cobra verifier and introduce how to run Cobra verifier on existing transaction histories (see [CobraLogs](https://github.com/DBCobra/CobraLogs)) or the workloads that one newly generates (see [CobraBench](https://github.com/DBCobra/CobraBench)).
 
-Cobra verifier requires a NVIDIA GPU and corresponding environments (GPU drivers, libraries, and a NVCC compiler). 
+Cobra verifier requires a NVIDIA GPU and a corresponding environment (GPU drivers, libraries, and a NVCC compiler). 
 
 The commands in this tutorial have been tested on Ubuntu 16.04,
-Java v1.8.0, and Version 10.0.130.
+Java v1.8.0, and CUDA Version 10.0.130.
 
 
 ### Step 0: Setup environment
