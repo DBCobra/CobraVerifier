@@ -1,0 +1,112 @@
+syntax = "proto3";
+
+package pb;
+
+option java_multiple_files = true;
+option java_package = "pb";
+option java_outer_classname = "TxnPB";
+
+message Empty {}
+
+message Key {
+	string key = 1;
+}
+
+message Value {
+	string value = 1;
+}
+
+message KeyValue {
+	string key = 1;
+	string value = 2;
+}
+
+message BeginArg {}
+
+message CommitArg {
+	int64 txnid = 1;
+}
+
+message AbortArg {
+	int64 txnid = 1;
+}
+
+message RollbackArg {
+	int64 txnid = 1;
+}
+
+message InsertArg {
+	int64 txnid = 1;
+	KeyValue kv = 2;
+}
+
+message DeleteArg {
+	int64 txnid = 1;
+	Key key = 2;
+}
+
+message GetArg {
+	int64 txnid = 1;
+	Key key = 2;
+}
+
+message SetArg {
+	int64 txnid = 1;
+	KeyValue kv = 2;
+}
+
+message IsAliveArg {
+	int64 txnid = 1;
+}
+
+enum Op {
+	Begin = 0;
+	Commit = 1;
+	Abort = 2;
+	Rollback = 3;
+	IsAlive = 4;
+	Insert = 5;
+	Delete = 6;
+	Get = 7;
+	Set = 8;
+}
+
+enum ErrorType {
+	TxnError = 0;
+	KvError = 1;
+	OtherError = 2;
+}
+
+message ServiceError {
+	string msg = 1;
+	ErrorType et = 2;
+}
+
+message ResponseKv {
+	int64 txnid = 1;
+	oneof result {
+		KeyValue kv = 2;
+		Key k = 3;
+		ServiceError e = 4;
+	}
+}
+
+message Response {
+	int64 txnid = 1;
+	oneof result {
+		bool res = 2;
+		ServiceError e = 3;
+	}
+}
+
+service KvService {
+	rpc Begin (BeginArg) returns (Response) {}
+	rpc Commit (CommitArg) returns (Response) {}
+	rpc Abort (AbortArg) returns (Response) {}
+	rpc Rollback (RollbackArg) returns (Response) {}
+	rpc IsAlive (IsAliveArg) returns (Response) {}
+	rpc Insert (InsertArg) returns (Response) {}
+	rpc Delete (DeleteArg) returns (Response) {}
+	rpc Get (GetArg) returns (ResponseKv) {}
+	rpc Set (SetArg) returns (Response) {}
+}

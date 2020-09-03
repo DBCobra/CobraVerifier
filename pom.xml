@@ -1,0 +1,89 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>CobraVerifier</groupId>
+  <artifactId>CobraVerifier</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <dependencies>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+        <!-- <version>26.0-jre</version> -->
+      <version>29.0-jre</version>
+    </dependency>
+    	<dependency>
+		<groupId>net.openhft</groupId>
+		<artifactId>zero-allocation-hashing</artifactId>
+		<version>0.8</version>
+	</dependency>
+	<dependency>
+		<groupId>io.grpc</groupId>
+		<artifactId>grpc-netty-shaded</artifactId>
+		<version>1.17.1</version>
+	</dependency>
+	<dependency>
+		<groupId>io.grpc</groupId>
+		<artifactId>grpc-protobuf</artifactId>
+		<version>1.17.1</version>
+	</dependency>
+	<dependency>
+		<groupId>io.grpc</groupId>
+		<artifactId>grpc-stub</artifactId>
+		<version>1.17.1</version>
+	</dependency>
+	<dependency>
+		<groupId>org.postgresql</groupId>
+		<artifactId>postgresql</artifactId>
+		<version>42.2.5</version>
+	</dependency>
+
+		<dependency>
+		<groupId>monosat</groupId>
+		<artifactId>monosat</artifactId>
+		<version>1.4.0</version>
+	</dependency>
+
+	<!--
+	<dependency>
+		<groupId>monosat</groupId>
+		<artifactId>tools</artifactId>
+		<version>1.4.0</version>
+		<scope>system</scope>
+		<systemPath>${basedir}/monosat/monosat.jar</systemPath>
+	</dependency>
+	  -->
+  </dependencies>
+
+
+<repositories>
+  <repository>
+    <id>monosat</id>
+    <url>file://${basedir}/monosat/monosat.jar</url>
+  </repository>
+</repositories>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>test.Main</mainClass>
+            </manifest>
+          </archive>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>install</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

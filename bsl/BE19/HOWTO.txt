@@ -1,0 +1,83 @@
+How to run BE19
+-----
+(0) install Rust and Cargo (BE19 uses Rust).
+
+see https://www.rust-lang.org/tools/install
+
+$ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+$ sudo apt-get install libclang-dev
+
+
+(1) build BE19/BE19-bic
+
+# build the code
+$ cd /path/to/CobraVerifier/BE19/
+$ unzip dbcop-master.zip
+$ cd dbcop-master/
+$ cargo build
+
+# test the binary
+$ ./target/debug/dbcop
+# should return "USAGE: dbcop <SUBCOMMAND>"
+
+(2) prepare inputs: convert Cobra's logs to BE19
+
+# build translator
+$ cd /path/to/CobraVerifier/BE19/BE19_translator/
+$ cargo build
+
+# test the binary
+$ ./target/debug/translator
+# should return "Usage: translator <Cobra-log-folder> <BE19-log-folder>"
+
+# convert the inputs (for example)
+$ ./target/debug/translator ../../../CobraLogs/nsdi20/oneshot/chengRW-100/ /tmp/
+[Note: so far, we only support benchmark "ChengRW"]
+
+# here is the BE19 input file
+$ ls /tmp/history.bincode
+
+(3) run BE19/BE19-bic
+
+# move the BE19-log file to an empty folder and rename (for example)
+$ mv /tmp/history.bincode /newly_created_dir/history.bincode
+
+# run BE19; your results are in "/output_dir"
+$ cd /path/to/CobraVerifier/BE19/dbcop-master/
+$ ./target/debug/dbcop verify --cons ser --out_dir /output_dir/ --ver_dir /newly_created_dir/
+[Note: "--cons ser" means checking serializability]
+
+# run BE19-bic; your results are in "/output_dir"
+$ ./target/debug/dbcop verify --bic --cons ser --out_dir /output_dir/ --ver_dir /newly_created_dir/
+
+
+troubleshooting
+-------
+ERROR: 
+thread 'main' panicked at 'Unable to find libclang: "couldn\'t find any valid shared libraries matching: ....
+
+SOLUTION:
+$ sudo apt-get install libclang-dev
+
+
+
+
+
+misc
+-----
+code here:
+https://zenodo.org/record/3370437
+
+
+tarball:
+https://zenodo.org/record/3370437/files/paper_214.tar.bz
+
+README:
+https://zenodo.org/record/3370437/files/README.md
+
+real code, dbcop:
+https://gitlab.math.univ-paris-diderot.fr/ranadeep/dbcop
+
+dbcop tarball:
+https://gitlab.math.univ-paris-diderot.fr/ranadeep/dbcop/-/archive/master/dbcop-master.zip

@@ -1,0 +1,21 @@
+(0) install Z3
+
+(1) construct polyg file (using Cobra verifier)
+
+# you need Cobra verifier successfully built here
+# test verifier binary
+$ cd /path/to/CobraVerifier/
+$ java -jar target/CobraVerifier-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+# should return "Usage: run mono [audit|continue|dump] <config path> <benchmark path> <dumpgraph path>"
+
+# generate polygraph (transfer Cobra logs => polygraph file)
+$ ./dump_polyg.sh - ../CobraLogs/nsdi20/oneshot/chengRW-1000/ /tmp/chengRW-1000.polyg (for example)
+
+(1) run encoding "unr":
+
+$ cd /path/to/CobraVerifier/Z3/
+$ python veri_polyg.py unr /tmp/chengRW-1000.polyg  (for example)
+
+(2) run encoding "be19":
+
+$ python veri_polyg.py be19 /tmp/chengRW-1000.polyg  (for example)

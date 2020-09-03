@@ -1,0 +1,15 @@
+[package]
+
+name = "translator"
+version = "0.0.1"
+authors = [ "naizhengtan" ]
+
+
+[dependencies]
+serde = "1.0.103"
+serde_derive = "1.0.103"
+serde_json = "1.0.44"
+serde_yaml = "0.8.11"
+chrono = { version = "0.4.10", features = ["serde"] }
+bincode = "1.2.1"
+

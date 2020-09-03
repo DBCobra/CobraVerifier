@@ -1,0 +1,62 @@
+Baslines
+----
+
+-- (a) BE19 algo (rust)
+-- (b) BE19 SAT encoding + MiniSAT
+-- (c) BE19 SAT encoding + Z3
+-- (d) SMT encoding + Z3
+
+
+(I) Setup: Build & Config
+----
+
+1. install Z3 and MiniSAT
+
+  $ sudo apt install wcstools  // needed by cmd "filename"
+  $ sudo apt-get install z3 minisat
+  $ pip install z3-solver  // used by python script; NOTE "z3" package is different!
+
+2. compile BE19 
+
+  % see BE19/HOWTO.txt
+  $ [install rust; make]
+
+3. deploy and generate workloads
+
+  -- copy the binary to the right locations
+  -- generate binhistory for (a)
+  -- generate CNF for (b) and (c)
+
+  $ ./deploy_gen.sh  ../../CobraLogs/bsl/
+
+
+(II) run baselines
+----
+
+1. run (a) BE19
+
+# run BE19; your results are in "/output_dir"
+$ cd /path/to/CobraVerifier/BE19/dbcop-master/
+$ ./target/debug/dbcop verify --cons ser --out_dir /output_dir/ --ver_dir /newly_created_dir/
+[Note: "--cons ser" means checking serializability]
+
+# run BE19-bic; your results are in "/output_dir"
+$ ./target/debug/dbcop verify --bic --cons ser --out_dir /output_dir/ --ver_dir /newly_created_dir/
+
+2. run (b), BE19 SAT encoding + MiniSAT
+
+3. run (c), BE19 SAT encoding + Z3
+
+4. run (d), SMT encoding + Z3
+
+5. run all
+
+$ python run_bsl.py all ./bin/ ./data/
+
+
+Troubleshooting
+---
+
+** ModuleNotFoundError: No module named 'z3'
+
+pip install z3-solver
