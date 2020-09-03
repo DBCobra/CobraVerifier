@@ -3,8 +3,12 @@ if [ "$JAVA_HOME" == "" ]; then
   echo "JAVA_HOME is empty"
   exit 1
 fi
+if [ "$CUDA_PATH" == "" ]; then
+  echo "CUDA_PATH is empty"
+  exit 1
+fi
 
-CUDA_PATH="/usr/local/cuda"
+#CUDA_PATH="/usr/local/cuda"
 CUDA_INC=$CUDA_PATH/include
 CUDA_LIB=$CUDA_PATH/lib64
 CUDNN_PATH=$HOME/scratch/cudnn/cuda
