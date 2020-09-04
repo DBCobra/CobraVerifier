@@ -1,0 +1,3 @@
+[submodule "CobraLogs"]
+	path = CobraLogs
+	url = git@github.com:DBCobra/CobraLogs.git

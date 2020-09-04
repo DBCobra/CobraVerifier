@@ -34,7 +34,7 @@ One can test one baseline at a time using:
 This experiment uses Cobra's verifier to check serializability violations in productions systems.
 
     $ cd $COBRA_HOME/CobraVerifier/
-    $ python ./bench_violation.py ../CobraLogs/ser-violation/
+    $ python ./bench_violation.py ./CobraLogs/ser-violation/
 
 
 Note: for the case "yuga-G2-a", the history size (37.2k transactions) is too large for the default configuration. You will see a error message of either `java.lang.OutOfMemoryError: Java heap space` or `GPU: out of memory`. To check this case, one need to:
@@ -43,7 +43,7 @@ Note: for the case "yuga-G2-a", the history size (37.2k transactions) is too lar
 
 * allocate more memory for the GPU: change the parameter `#define MAX_N 16384ul` (default) to `38000ul` in file `$COBRA_HOME/CobraVerifier/include/gpu_GPUmm.cu`, and rebuild the verifier (`./run.sh build`).
 
-* check the case  "yuga-G2-a": `./run.sh mono aduit ./cobra.conf.default ../CobraLogs/ser-violation/yuga-G2-a/`
+* check the case  "yuga-G2-a": `./run.sh mono aduit ./cobra.conf.default ./CobraLogs/ser-violation/yuga-G2-a/`
 
 
 ### 3 & 4. <a name='oneshot10k' /> Cobra's verifier performance analysis
@@ -52,7 +52,7 @@ This experiment runs four variants of Cobra's verifier (MonoSAT, Cobra w/o prunn
 By analyzing the results, we have results for (1) decomposition of cobra's verification runtime and (2) differential analysis.
 
     $ cd $COBRA_HOME/CobraVerifier/
-    $ python bench_mono.py ../CobraLogs/one-shot-10k/
+    $ python bench_mono.py ./CobraLogs/one-shot-10k/
     
 This experiment will take about 20min to finish (with the default settings).
 This experiment runs four verifier variants on five workloads, which contains 20 runs in total. The default timeout is 60s,
@@ -73,7 +73,7 @@ The numbered cell (for example, `1.70/0.00/1.04/2.76`) represents runtime (in se
 To reproduce the results of scaling, run the following cmds:
 
     $ cd $COBRA_HOME/CobraVerifier/
-    $ python bench_scaling.py ../CobraLogs/scaling/
+    $ python bench_scaling.py ./CobraLogs/scaling/
 
 This experiment will take about 0.5-1hr to finish.
 It runs verification in rounds with seven different batch sizes (number of transactions for each round) on two workloads, which is 14 runs in total. Each run takes about several minutes to finish.
@@ -140,8 +140,8 @@ If the translator is successfully compiled, you can test the binary by:
 
 Finally, we deploy these baselines and convert histories into the formats that these baselines can consume:
 
-	$ cd $COBRA_HOME/CobraVerifier/bsl/
-    $ ./deploy_gen.sh ../../CobraLogs/bsl/
+    $ cd $COBRA_HOME/CobraVerifier/bsl/
+    $ ./deploy_gen.sh ../CobraLogs/bsl/
 
 Note that the deployment may take a while (tens of minutes) because converting histories to some format (DIMACS, a CNF format) is slow; also, the DIMACS file may consume substantial disk space (several to tens of GB) for workloads larger than 500 transactions. 
 
