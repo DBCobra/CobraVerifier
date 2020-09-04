@@ -68,7 +68,7 @@ def main(t_folder):
     batch_sizes = [ 50, 100, 150, 200, 250, 300, 400 ]
     #skip_benches = ["chengRW-100000", "tpcc-100000"]
     #skip_benches = ["chengRW-100000", "chengRM-100000", "rubis-100000", "tpcc-100000", "twitter-100000"]
-    skip_benches = ["chengRW-100000", "chengRM-100000", "rubis-100000", "tpcc-100000"]
+    skip_benches = ["chengRW-100000", "twitter-100000", "tpcc-100000"]
 
     results = {} # {bench : {batch1: throughput; batch2: throughput; ...}; ...}
     for bench in os.listdir(t_folder):
