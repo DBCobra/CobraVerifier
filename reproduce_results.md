@@ -10,6 +10,11 @@ There are five topics about experimenting Cobra's verifier in Section 6.1 and 6.
 
 In the following, we will introduce how to reproduce the results.
 
+### 0. Fetching histories
+
+    $ git submodule update --init --recursive
+
+
 ### 1. <a name='bsl' /> Comparing with baselines on various workload sizes
 
 This experiment runs four baselines ([BE19](https://gitlab.math.univ-paris-diderot.fr/ranadeep/dbcop), [MiniSAT](http://minisat.se/), [Z3](https://github.com/Z3Prover/z3), and [MonoSAT](http://www.cs.ubc.ca/labs/isd/Projects/monosat/)) and Cobra's verifier on workloads with various sizes.
