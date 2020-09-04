@@ -34,7 +34,7 @@ One can test one baseline at a time by:
     $ python ./run_bsl.py [be19|sat-mini|smt-z3|mono|cobra] ./bin/ ./data/
     // choose one from [be19|sat-mini|smt-z3|mono|cobra]
 
-The running time for each workload will print on screen after finishing all workloads.
+The running time for each workload will print on screen after finishing all workloads. This experiment reproduces Figure 5 in Section 6.1.
 
 
 ### 2. <a name='ser_violation' /> Detecting serializability violations
@@ -45,6 +45,7 @@ This experiment uses Cobra verifier to check (known) serializability violations 
     $ python ./bench_violation.py ./CobraLogs/ser-violation/
 
 The results will print on screen after checking all cases.
+This experiment reproduces Figure 6 in Section 6.1.
 
 **Note**: for one case "yuga-G2-a", the history size (37.2k transactions) is too large for the default configuration. You will see an error message of either `java.lang.OutOfMemoryError: Java heap space` or `GPU: out of memory`. To check this case, one needs to:
 
@@ -82,6 +83,8 @@ In the above results, `FFF`, `TFF`, `TTF`, and `TTT` represent the different Cob
 `timeoutexpired` indicates that the verification terminates before finishing because of timeout; 
 the numbered cell (for example, `1.70/0.00/1.04/2.76`) represents runtime (in seconds; separated by `/`) of constructing, pruning, solving, and the whole verification.
 
+This experiment reproduces Figure 7 and 8 in Section 6.1.
+
 ### 5. <a name='scaling' /> Scaling
 
 To reproduce the results of scaling, run the following commands:
@@ -91,6 +94,8 @@ To reproduce the results of scaling, run the following commands:
 
 This experiment will take about 0.5-1hr to finish.
 It runs verification in rounds with seven different batch sizes (that is how many transactions fetched for each round) on two workloads (C-RUBiS and BlindW-RM), which contains 14 runs in total. Each run takes several minutes to finish.
+
+This experiment reproduces Figure 9 in Section 6.2.
 
  <a name='build_bsl'/> Building baselines
 ---
@@ -113,6 +118,9 @@ Install Rust following [official website](https://www.rust-lang.org/tools/instal
 
     $ sudo apt install libclang-dev
     $ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+Note that Rust tools are installed to the `~/.cargo/bin` directory.
+To run the following commands, one can either include the directory to their `PATH` environment variable or complete commands with the full path.
 
 
 #### (2) compile BE19

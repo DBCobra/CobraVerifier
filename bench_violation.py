@@ -34,9 +34,9 @@ def dump_output_space(result):
     str_out = None
     for bench in result:
         size, runtime = result[bench]
-        line = "%-20s %-20s %-20s" % (bench, size, runtime)
+        line = "%-20s %-20s" % (bench, runtime)
         if str_out is None:
-            str_out = 'workload size runtime\n'
+            str_out = 'workload runtime\n'
         str_out += line + "\n"
     print(str_out)
 
