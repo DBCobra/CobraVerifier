@@ -1,6 +1,6 @@
 # Instructions to reproduce results
 
-This tutorial introduces how to reprodcue the results
+This tutorial introduces how to reproduce the results
 in Section 6.1 and 6.2 of Cobra paper (to appear).
 There are five topics about experimenting Cobra verifier:
 
@@ -18,7 +18,7 @@ There are five topics about experimenting Cobra verifier:
 
 ### 1. <a name='bsl' /> Compare Cobra with baselines on various workloads
 
-This experiment runs Cobra verifier and four baselines ([BE19, MiniSAT, Z3, and MonoSAT](#build_bsl)) on the BlindW-RW bencharmk of various sizes (200-10,000 transactions).
+This experiment runs Cobra verifier and four baselines ([BE19, MiniSAT, Z3, and MonoSAT](#build_bsl)) on the BlindW-RW benchmark of various sizes (200-10,000 transactions).
 
 Follow [build and deploy baselines](#build_bsl) to setup the baselines.
 
@@ -73,7 +73,7 @@ It runs four verifier variants on five workloads, which contains 20 runs in tota
 The default timeout is 60s,
 which can be updated by changing `g_timeout = 60` in the file `bench_mono.py`.
 
-After runing all cases, one will see results on screen (for example):
+After running all cases, one will see results on screen (for example):
 
 >  workload  &nbsp;   FFF  &nbsp; TFF  &nbsp; TTF &nbsp; TTT  
 >  tpcc-10000    &nbsp;     timeoutexpired &nbsp; 1.70/0.00/1.04/2.76 &nbsp; 1.55/0.00/0.75/2.33 &nbsp;  1.65/0.00/0.32/2.01  
@@ -108,7 +108,7 @@ Cobra paper (to appear) experiments four baselines (please see details in the pa
 * (d) MonoSAT: using the original polygraph encoding and feeding this encoding to [MonoSAT](http://www.cs.ubc.ca/labs/isd/Projects/monosat/)
 
 In the following, we first build the baseline (a)-(c), and then deploy them for future usage.
-Basline (d) is implemented in Cobra verifier.
+Baseline (d) is implemented in Cobra verifier.
 
 ### Step 1: build BE19
 
