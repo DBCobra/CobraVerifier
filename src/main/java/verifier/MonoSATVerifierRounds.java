@@ -101,6 +101,9 @@ public class MonoSATVerifierRounds extends AbstractLogVerifier {
 			
 			// create a constraint for each pair of chains
 			List<List<TxnNode>> chainset = new ArrayList<List<TxnNode>>(chains.get(key));
+			if (init_chain != null) {
+				chainset.remove(init_chain); // init_chain is ahead of any other chains; no need to generate constraints
+			}
 			// tag whether a chain is frozen (frozen if all the txs are frozen)
 			Map<Integer, Boolean> chain_frozen = new HashMap<Integer,Boolean>();
 			for (int i=0; i<chainset.size(); i++) {
