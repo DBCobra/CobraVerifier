@@ -44,11 +44,11 @@ This experiment uses Cobra's verifier to check serializability violations in pro
 
 Note: for the case "yuga-G2-a", the history size (37.2k transactions) is too large for the default configuration. You will see a error message of either `java.lang.OutOfMemoryError: Java heap space` or `GPU: out of memory`. To check this case, one need to:
 
-* allocate more memory for JVM: modify the line `EA="-ea"` in the file `$COBRA_HOME/CobraVerifier/run.sh` to `EA="-ea" -Xmx8192m` (provide 8GB memory to JVM)
+* allocate more memory for JVM: modify the line `EA="-ea"` in the file `$COBRA_HOME/CobraVerifier/run.sh` to `EA="-ea -Xmx8192m"` (provide 8GB memory to JVM)
 
 * allocate more memory for the GPU: change the parameter `#define MAX_N 16384ul` (default) to `38000ul` in file `$COBRA_HOME/CobraVerifier/include/gpu_GPUmm.cu`, and rebuild the verifier (`./run.sh build`).
 
-* check the case  "yuga-G2-a": `./run.sh mono aduit ./cobra.conf.default ./CobraLogs/ser-violation/yuga-G2-a/`
+* check the case  "yuga-G2-a": `./run.sh mono audit ./cobra.conf.default ./CobraLogs/ser-violation/yuga-G2-a/`
 
 
 ### 3 & 4. <a name='oneshot10k' /> Cobra's verifier performance analysis
@@ -101,7 +101,7 @@ In the following, we first build and install the baseline (a)-(c), and then depl
 
 Install Rust following [official website](https://www.rust-lang.org/tools/install):
 
-    $ sudo apt-get install libclang-dev
+    $ sudo apt install libclang-dev
     $ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 
@@ -133,12 +133,12 @@ If the translator is successfully compiled, you can test the binary by:
 
 ### Step 2: install MiniSAT
 
-    $ sudo apt-get install minisat
+    $ sudo apt install minisat
     
     
 ### Step 3: install Z3
 
-    $ sudo apt-get install z3
+    $ sudo apt install z3
     $ pip install z3-solver
 
 ### Step 4: deploy baselines
@@ -155,4 +155,4 @@ Troubleshooting
 ------- 
 #### thread 'main' panicked at 'Unable to find libclang: "couldn\'t find any valid shared libraries matching: ....
 
-Run `$ sudo apt-get install libclang-dev`
+Run `$ sudo apt install libclang-dev`

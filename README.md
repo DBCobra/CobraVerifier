@@ -9,7 +9,7 @@ The following steps build Cobra verifier and introduce how to run Cobra verifier
 
 Cobra verifier requires a NVIDIA GPU and a corresponding environment (GPU drivers, libraries, and a NVCC compiler). 
 
-The commands in this tutorial have been tested on Ubuntu 16.04,
+The commands in this tutorial have been tested on Ubuntu 18.04,
 Java v1.8.0, and CUDA Version 10.0.130.
 
 
@@ -27,7 +27,7 @@ Please see README in [CobraHome](https://github.com/DBCobra/CobraHome) and prepa
 
 Install required packages:
 
-    $ sudo apt-get install libgmpxx4ldbl maven wcstools
+    $ sudo apt install libgmpxx4ldbl maven wcstools
     
 
 Add MonoSAT as a library:
