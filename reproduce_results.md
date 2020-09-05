@@ -1,14 +1,13 @@
 # Instructions to reproduce results
 
 This tutorial introduces how to reproduce the results
-in Section 6.1 and 6.2 of Cobra paper (to appear).
-There are five topics about experimenting Cobra verifier:
+in Section 6.1 and 6.2 of Cobra paper (to appear):
 
-1. [Verification runtime vs. number of transactions](#bsl)
-2. [Detecting serializability violations](#ser_violation)
-3. [Decomposition of cobra's verification runtime](#oneshot10k)
-4. [Differential analysis of Cobra's verification runtime](#oneshot10k)
-5. [Cobra verifier's scaling](#scaling)
+1. [Verification runtime vs. number of transactions (Figure 5)](#bsl)
+2. [Detecting serializability violations (Figure 6)](#ser_violation)
+3. [Decomposition of cobra's verification runtime (Figure 7)](#oneshot10k)
+4. [Differential analysis of Cobra's verification runtime (Figure 8)](#oneshot10k)
+5. [Cobra verifier's scaling (Figure 9)](#scaling)
 
 
 ### 0. Fetching histories
@@ -16,7 +15,7 @@ There are five topics about experimenting Cobra verifier:
     $ git submodule update --init --recursive
 
 
-### 1. <a name='bsl' /> Compare Cobra with baselines on various workloads
+### 1. <a name='bsl' /> Compare Cobra with baselines on various workloads (Figure 5)
 
 This experiment runs Cobra verifier and four baselines ([BE19, MiniSAT, Z3, and MonoSAT](#build_bsl)) on the BlindW-RW benchmark of various sizes (200-10,000 transactions).
 
@@ -37,7 +36,7 @@ One can test one baseline at a time by:
 The running time for each workload will print on screen after finishing all workloads. This experiment reproduces Figure 5 in Section 6.1.
 
 
-### 2. <a name='ser_violation' /> Detecting serializability violations
+### 2. <a name='ser_violation' /> Detecting serializability violations (Figure 6)
 
 This experiment uses Cobra verifier to check (known) serializability violations in productions systems.
 
@@ -58,10 +57,10 @@ This experiment reproduces Figure 6 in Section 6.1.
 * check the case  "yuga-G2-a": `./run.sh mono audit ./cobra.conf.default ./CobraLogs/ser-violation/yuga-G2-a/`
 
 
-### 3 & 4. <a name='oneshot10k' /> Cobra verifier performance analysis
+### 3 & 4. <a name='oneshot10k' /> Cobra verifier performance analysis (Figure 7 & 8)
 
 This experiment runs four variants of Cobra's verifier (MonoSAT, Cobra w/o prunning, Cobra w/o pruning and coalescing, and Cobra) on five benchmarks (TPC-C, C-Twitter, C-RUBiS, BlindW-RW, and BlindW-RM) of size 10,000 transactions. 
-By analyzing the results, we can reproduce (1) decomposition of verification runtime and (2) differential analysis.
+This experiment reproduces (1) decomposition of verification runtime (Figure 7) and (2) differential analysis (Figure 8).
 
 Run the experiment:
 
@@ -85,17 +84,15 @@ the numbered cell (for example, `1.70/0.00/1.04/2.76`) represents runtime (in se
 
 This experiment reproduces Figure 7 and 8 in Section 6.1.
 
-### 5. <a name='scaling' /> Scaling
+### 5. <a name='scaling' /> Scaling (Figure 9)
 
-To reproduce the results of scaling, run the following commands:
+To reproduce Figure 9 in Section 6.2, run the following commands:
 
     $ cd $COBRA_HOME/CobraVerifier/
     $ python bench_scaling.py ./CobraLogs/scaling/
 
 This experiment will take about 0.5-1hr to finish.
 It runs verification in rounds with seven different batch sizes (that is how many transactions fetched for each round) on two workloads (C-RUBiS and BlindW-RM), which contains 14 runs in total. Each run takes several minutes to finish.
-
-This experiment reproduces Figure 9 in Section 6.2.
 
  <a name='build_bsl'/> Building baselines
 ---
