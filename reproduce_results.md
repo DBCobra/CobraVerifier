@@ -22,7 +22,7 @@ This experiment runs Cobra verifier and four baselines ([BE19, MiniSAT, Z3, and 
 Follow [build and deploy baselines](#build_bsl) to setup the baselines.
 
 After deploying baselines,
-use the following commands to run **all** baselines, which may take **many hours** to finish depending on the workloads in `./data/`.
+use the following commands to run **all** baselines, which may take many hours to finish depending on the workloads in `./data/`.
 
     $ cd $COBRA_HOME/CobraVerifier/bsl/
     $ python ./run_bsl.py all ./bin/ ./data/
