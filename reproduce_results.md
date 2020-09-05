@@ -46,7 +46,7 @@ This experiment uses Cobra verifier to check (known) serializability violations 
 The results will print on screen after checking all cases.
 This experiment reproduces Figure 6 in Section 6.1.
 
-**Note**: for one case "yuga-G2-a", the history size (37.2k transactions) is too large for the default configuration. You will see an error message of either `java.lang.OutOfMemoryError: Java heap space` or `GPU: out of memory`. To check this case, one needs to:
+**Note**: for one case "yuga-G2-a", the history size (37.2k transactions) is too large for the default configuration. You will see an error message of either `java.lang.OutOfMemoryError: Java heap space` or `GPU: out of memory`. To check this case, follow these steps:
 
 * allocate more memory for JVM: update file `$COBRA_HOME/CobraVerifier/run.sh` line 10 (`EA="-ea"`) to `EA="-ea -Xmx8192m"` (provide 8GB memory to JVM)
 
@@ -57,7 +57,7 @@ This experiment reproduces Figure 6 in Section 6.1.
 * check the case  "yuga-G2-a": `./run.sh mono audit ./cobra.conf.default ./CobraLogs/ser-violation/yuga-G2-a/`
 
 
-### 3 & 4. <a name='oneshot10k' /> Cobra verifier performance analysis (Figure 7 & 8)
+### 3. & 4. <a name='oneshot10k' /> Cobra verifier performance analysis (Figures 7 & 8)
 
 This experiment runs four variants of Cobra's verifier (MonoSAT, Cobra w/o prunning, Cobra w/o pruning and coalescing, and Cobra) on five benchmarks (TPC-C, C-Twitter, C-RUBiS, BlindW-RW, and BlindW-RM) of size 10,000 transactions. 
 This experiment reproduces (1) decomposition of verification runtime (Figure 7) and (2) differential analysis (Figure 8).
@@ -97,7 +97,7 @@ It runs verification in rounds with seven different batch sizes (that is how man
  <a name='build_bsl'/> Building baselines
 ---
 
-Cobra paper [[1]](#cobrapaper) experiments four baselines (please see details in the paper Section 6.1):
+The Cobra paper [[1]](#cobrapaper) experiments four baselines (please see details in the paper, Section 6.1):
 
 * (a) BE19: the serializability checking algorithm in [Biswas and Enea](https://arxiv.org/abs/1908.04509), which is implemented in Rust
 * (b) MiniSAT: encoding serializability checking into SAT formulas and feeding this encoding to [MiniSAT](http://minisat.se/)
