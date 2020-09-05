@@ -3,9 +3,6 @@
 Cobra verifier is a component of the [Cobra project](https://github.com/DBCobra/CobraHome).
 Cobra verifier checks [serializability](https://en.wikipedia.org/wiki/Serializability) of a set of transactions (called history). The Cobra paper [[1]](#cobrapaper) defines the problem and gives context.
 
-    <!-- XXX: see this: https://blog.padhye.org/Artifact-Evaluation-Tips-for-Authors/
-       Tip 2 especially. -->
-
 How to install and run Cobra verifier
 ---
 
