@@ -1,7 +1,7 @@
 # Cobra Verifier
 
 Cobra verifier is a component of [Cobra project](https://github.com/DBCobra/CobraHome).
-Cobra verifier checks [serializability](https://en.wikipedia.org/wiki/Serializability) of a set of transactions (called history). Cobra paper (to appear) defines the problem and gives context.
+Cobra verifier checks [serializability](https://en.wikipedia.org/wiki/Serializability) of a set of transactions (called history). Cobra paper [[1]](#cobrapaper) defines the problem and gives context.
 
 How to install and run Cobra verifier
 ---
@@ -78,7 +78,7 @@ whose database library issues fence transactions.
 Reproduce results
 ---
 
-In Cobra paper (to appear), we experiment with the verifier on various workloads, and compare it with different baselines.
+In Cobra paper [[1]](#cobrapaper), we experiment with the verifier on various workloads, and compare it with different baselines.
 To reproduce Figure 5-9 in Section 6.1 and 6.2, please see [instructions to reproduce experiments](reproduce_results.md).
 
 
@@ -104,6 +104,10 @@ There are three reasons why Cobra verifier reports this error.
 * The required GPU memory exceeds the physical GPU memory. In this case, Cobra cannot verify this history with the current GPU. 
 
 
+<a name="cobrapaper" /> Reference
+---
+
+[1] Cheng Tan, Changgeng Zhao, Shuai Mu, and Michael Walfish. Cobra: Making Transactional Key-Value Stores Verifiably Serializable. OSDI 2020.
 
 
 

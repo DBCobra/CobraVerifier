@@ -1,7 +1,7 @@
 # Instructions to reproduce results
 
 This tutorial introduces how to reproduce the results
-in Section 6.1 and 6.2 of Cobra paper (to appear):
+in Section 6.1 and 6.2 of Cobra paper [[1]](#cobrapaper):
 
 1. [Verification runtime vs. number of transactions (Figure 5)](#bsl)
 2. [Detecting serializability violations (Figure 6)](#ser_violation)
@@ -97,7 +97,7 @@ It runs verification in rounds with seven different batch sizes (that is how man
  <a name='build_bsl'/> Building baselines
 ---
 
-Cobra paper (to appear) experiments four baselines (please see details in the paper Section 6.1):
+Cobra paper [[1]](#cobrapaper) experiments four baselines (please see details in the paper Section 6.1):
 
 * (a) BE19: the serializability checking algorithm in [Biswas and Enea](https://arxiv.org/abs/1908.04509), which is implemented in Rust
 * (b) MiniSAT: encoding serializability checking into SAT formulas and feeding this encoding to [MiniSAT](http://minisat.se/)
@@ -171,3 +171,8 @@ Troubleshooting
 #### thread 'main' panicked at 'Unable to find libclang: "couldn\'t find any valid shared libraries matching: ...
 
 Run `$ sudo apt install libclang-dev`
+
+<a name="cobrapaper" /> Reference
+---
+
+[1] Cheng Tan, Changgeng Zhao, Shuai Mu, and Michael Walfish. Cobra: Making Transactional Key-Value Stores Verifiably Serializable. OSDI 2020.
