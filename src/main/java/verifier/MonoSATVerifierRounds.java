@@ -901,13 +901,87 @@ public class MonoSATVerifierRounds extends AbstractLogVerifier {
 		
 		return frontier;
 	}
+	
+	private Set<Pair<Long,Long>> GetTransitiveClosureEdges(PrecedenceGraph g, 
+			ReachabilityMatrix rm, Set<Long> del_txns, Map<Long, SCCNode> tid2scc) 
+	{
+		Set<TxnNode> srcs = new HashSet<TxnNode>();
+		Set<TxnNode> dsts = new HashSet<TxnNode>();
+		Set<TxnNode> dels = new HashSet<TxnNode>();
+		for (long d_id : del_txns) {
+			TxnNode txn = g.getNode(d_id);
+			dels.add(txn);
+			srcs.addAll(g.predecessors(txn));
+			dsts.addAll(g.successors(txn));
+		}
+		srcs.removeAll(dels);
+		dsts.removeAll(dels);
+		srcs.remove(g.getNode(VeriConstants.INIT_TXN_ID));
+		dsts.remove(g.getNode(VeriConstants.INIT_TXN_ID));
+		
+		dels.clear();
+		for (TxnNode snode :srcs) {
+			if (tid2scc.get(snode.getTxnid()).frozen) {
+				dels.add(snode);
+			}
+		}
+		srcs.removeAll(dels);
+		dels.clear();
+		for (TxnNode dnode : dsts) {
+			// successor node might be too new to be included in current round
+			if (tid2scc.containsKey(dnode.getTxnid()) &&
+					tid2scc.get(dnode.getTxnid()).frozen) {
+				dels.add(dnode);
+			}
+		}
+		dsts.removeAll(dels);
+		dels.clear();
+		
+		int counter = 0;
+		int bad_luck = 0;
+		Set<Pair<Long,Long>> ret = new HashSet();
+		for (TxnNode src_node : srcs) {
+			for (TxnNode dst_node : dsts) {
+				counter++;
+				// (1) RM, epoch
+				int type = isItoJ(src_node, dst_node, rm);
+				if (type == 1) {
+					ret.add(new Pair(src_node.getTxnid(), dst_node.getTxnid()));
+					continue;
+				} else if (type == 0) { // unkown or concurrent
+					// (2) if same session or have direct edge
+					if (src_node.getClientId() == dst_node.getClientId()
+							|| m_g.successors(src_node).contains(dst_node)
+							|| m_g.predecessors(src_node).contains(dst_node)) {
+						continue;
+					}
+					// (3)
+					bad_luck++;
+					if (Graphs.reachableNodes(g.getGraph(), src_node).contains(dst_node)) {
+						ret.add(new Pair(src_node.getTxnid(), dst_node.getTxnid()));
+					}
+				}
+			}
+		}
 
-	private void SafeDeletion(PrecedenceGraph g, Set<Long> del_txns) {
+		ChengLogger.println("RM size=" + rm.getN());
+		ChengLogger.println("Src size=" + srcs.size() + "; dst size=" + dsts.size());
+		ChengLogger.println("total comparison = " + counter);
+		ChengLogger.println("BAD LUCK counter=" + bad_luck);
+		
+		return ret;
+	}
+	
+	private void SafeDeletion(PrecedenceGraph g, Set<Long> del_txns, Set<Pair<Long, Long>> tr_edges) {
 		for (long tid : del_txns) {
 			TxnNode del = g.getNode(tid);
 			assert del.frozen;
 			assert !isFence(del);
 			g.deleteNodeSimple(del);
+		}
+		
+		for (Pair<Long,Long> e : tr_edges) {
+			g.addEdge(e.getFirst(), e.getSecond(), EdgeType.DEL_CONNECTED);
 		}
 	}
 
@@ -1420,6 +1494,7 @@ public class MonoSATVerifierRounds extends AbstractLogVerifier {
 			Set<TxnNode> new_compl_nodes = new HashSet<TxnNode>(new_nodes);
 			new_compl_nodes.removeAll(cur_incomplete_reachable);
 			assert new_compl_nodes.size() + cur_incomplete_reachable.size() == new_nodes.size(); // cur_cincomplete_reachable \subset new_nodes
+			CheckStaleReads(m_g, conx.frontier, new_compl_nodes, conx.epoch_agree);
 			
 			// (2) add edges; RMW, WR, and RW (NOTE: order matters)
 			TxnNode init = conx.c_g.getNode(VeriConstants.INIT_TXN_ID);
@@ -1448,7 +1523,7 @@ public class MonoSATVerifierRounds extends AbstractLogVerifier {
 
 		return conx.c_g;
 	}
-	
+
 	private void EncodeAndSolve(PrecedenceGraph cg, RoundContext conx) {
 		Profiler prof = Profiler.getInstance();
 		
@@ -1588,8 +1663,9 @@ public class MonoSATVerifierRounds extends AbstractLogVerifier {
 			
 			// =============3. Garage Collection================
 			Set<Long> del_txns = GarbageCollection(conx.c_g, conx);
-			SafeDeletion(m_g, del_txns);
-			SafeDeletion(conx.c_g, del_txns);
+			Set<Pair<Long, Long>> tr_edges = GetTransitiveClosureEdges(m_g, conx.rm, del_txns, conx.tid2scc);
+			SafeDeletion(m_g, del_txns, tr_edges);
+			SafeDeletion(conx.c_g, del_txns, tr_edges);
 			
 			// =============4. Wrap Up================
 			// UTBABUG: deleted_txnids is used to skip txns during the CrateGraph!!

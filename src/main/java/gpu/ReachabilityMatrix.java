@@ -77,6 +77,9 @@ public class ReachabilityMatrix {
 		return txnid2index.get(id);
 	}
 	
+	public boolean containTxnid(long tid) {
+		return txnid2index.containsKey(tid);
+	}
 	
 	// ======= connect ======
 	

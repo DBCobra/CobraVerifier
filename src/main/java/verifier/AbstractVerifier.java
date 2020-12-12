@@ -723,6 +723,58 @@ public abstract class AbstractVerifier {
 		}
 	}
 	
+	
+	public static void CheckStaleReads(PrecedenceGraph m_g, Map<Long, Set<Long>> frontier,
+			Set<TxnNode> new_compl_nodes, int epoch_agree) {
+		for (TxnNode n : new_compl_nodes) {
+			for (OpNode op : n.getOps()) {
+				if (op.isRead) {
+					long prev_txid = op.read_from_txnid;
+					if (prev_txid == VeriConstants.INIT_TXN_ID) {continue;}
+					assert m_g.containTxnid(prev_txid);
+					
+					int epoch = m_g.getNode(prev_txid).getVersion();
+					if (epoch == VeriConstants.TXN_NULL_VERSION || 
+							epoch > epoch_agree -2) 
+					{
+						continue;
+					}
+					
+					long key = op.key_hash;
+					long wid = op.wid;
+					if (key == wid || key == VeriConstants.VERSION_KEY_HASH) {continue;}
+					
+					if (!frontier.containsKey(key)) {
+						System.out.println("key: [" + Long.toHexString(key));
+						System.out.println("txn: " + n.toString2());
+						System.out.println("frontier: size=" + frontier.size());
+						assert false;
+					}
+					
+					if (!frontier.get(key).contains(prev_txid)) {
+						System.out.println("epoch_agree=" + epoch_agree);
+						System.out.println("key: [" + Long.toHexString(key));
+						System.out.println("txn: " + n.toString2());
+						System.out.println("read-from txn -----\n" + m_g.getNode(prev_txid).toString2());
+						System.out.println("frontier: size=" + frontier.size());
+						System.out.println("frontier-key: size=" + frontier.get(key).size());
+						for (long tid : frontier.get(key)) {
+							System.out.println("---frontier--: " + m_g.getNode(tid).toString2());
+						}
+						assert false;
+					}
+					
+					
+					
+					assert frontier.containsKey(key);
+					assert frontier.get(key).contains(prev_txid);
+				}
+			}
+		}
+	}
+
+
+	
 	// ===== helper functions ======
 	
 	private int max(int[] array) {
