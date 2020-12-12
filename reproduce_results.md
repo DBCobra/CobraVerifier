@@ -7,7 +7,7 @@ in Section 6.1 and 6.2 of Cobra paper [[1]](#cobrapaper):
 2. [Detecting serializability violations (Figure 6)](#ser_violation)
 3. [Decomposition of cobra's verification runtime (Figure 7)](#oneshot10k)
 4. [Differential analysis of Cobra's verification runtime (Figure 8)](#oneshot10k)
-5. [Cobra verifier's scaling (Figure 9)](#scaling)
+5. [Cobra verifier's scaling (Figure 10)](#scaling)
 
 
 ### 0. Fetching histories
@@ -84,9 +84,9 @@ the numbered cell (for example, `1.70/0.00/1.04/2.76`) represents runtime (in se
 
 This experiment reproduces Figure 7 and 8 in Section 6.1.
 
-### 5. <a name='scaling' /> Scaling (Figure 9)
+### 5. <a name='scaling' /> Scaling (Figure 10)
 
-To reproduce Figure 9 in Section 6.2, run the following commands:
+To reproduce Figure 10 in Section 6.2, run the following commands:
 
     $ cd $COBRA_HOME/CobraVerifier/
     $ python bench_scaling.py ./CobraLogs/scaling/
